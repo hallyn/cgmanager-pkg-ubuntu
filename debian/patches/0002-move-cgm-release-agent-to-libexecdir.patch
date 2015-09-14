@@ -1,0 +1,54 @@
+From e7d028198896378f5f6ef8b5f62bb24a7b34edb2 Mon Sep 17 00:00:00 2001
+From: Serge Hallyn <serge.hallyn@ubuntu.com>
+Date: Mon, 14 Sep 2015 14:33:03 -0500
+Subject: move cgm-release-agent to libexecdir
+
+Signed-off-by: Serge Hallyn <serge.hallyn@ubuntu.com>
+---
+ Makefile.am  | 4 +++-
+ configure.ac | 1 +
+ fs.c         | 2 +-
+ 3 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 15369de..9ca638b 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -23,9 +23,11 @@ CLEANFILES = \
+ 	*.o *.so \
+ 	libcgmanager.pc.in
+ 
+-sbin_PROGRAMS = cgmanager cgproxy cgm-release-agent
++sbin_PROGRAMS = cgmanager cgproxy
+ bin_PROGRAMS = cgm
+ 
++pkglibexec_PROGRAMS = cgm-release-agent
++
+ lib_LTLIBRARIES = libcgmanager.la
+ 
+ SUBDIRS = config
+diff --git a/configure.ac b/configure.ac
+index 3cebfce..4296b10 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -126,6 +126,7 @@ AC_PATH_PROG(HELP2MAN, help2man, false // No help2man //)
+ AM_CONDITIONAL([HAVE_HELP2MAN], [test "x$HELP2MAN" != "xfalse // No help2man //" ])
+ 
+ AS_AC_EXPAND(SBINDIR, "$sbindir")
++AS_AC_EXPAND(LIBEXECDIR, "$libexecdir")
+ 
+ AC_ARG_WITH(
+ 	[pamdir],
+diff --git a/fs.c b/fs.c
+index 90373ef..555c11a 100644
+--- a/fs.c
++++ b/fs.c
+@@ -55,7 +55,7 @@
+ #include "fs.h"        // for #defines
+ 
+ /* defines relating to the release agent */
+-#define AGENT SBINDIR "/cgm-release-agent"
++#define AGENT LIBEXECDIR "/cgm-release-agent"
+ #define AGENT_LINK_PATH "/run/cgmanager/agents"
+ 
+ /* Define pivot_root() if missing from the C library */

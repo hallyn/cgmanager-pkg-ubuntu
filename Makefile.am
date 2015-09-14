@@ -23,8 +23,10 @@ CLEANFILES = \
 	*.o *.so \
 	libcgmanager.pc.in
 
-sbin_PROGRAMS = cgmanager cgproxy cgm-release-agent
+sbin_PROGRAMS = cgmanager cgproxy
 bin_PROGRAMS = cgm
+
+pkglibexec_PROGRAMS = cgm-release-agent
 
 lib_LTLIBRARIES = libcgmanager.la
 
