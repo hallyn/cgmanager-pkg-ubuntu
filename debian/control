@@ -72,8 +72,6 @@ Description: Central cgroup manager daemon (dev)
 
 Package: libpam-cgm
 Architecture: linux-any
-Section: admin
-Priority: optional
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends},
          ${misc:Depends},
