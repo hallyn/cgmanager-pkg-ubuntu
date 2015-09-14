@@ -1,0 +1,38 @@
+From 9b439f8101b524e4310458a82929682fb75622f8 Mon Sep 17 00:00:00 2001
+From: Serge Hallyn <serge.hallyn@ubuntu.com>
+Date: Sun, 6 Sep 2015 08:48:18 -0500
+Subject: cgmanager: turn cgroupfs rw before trying to unlink sock
+
+Signed-off-by: Serge Hallyn <serge.hallyn@ubuntu.com>
+---
+ cgmanager.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/cgmanager.c b/cgmanager.c
+index 09081df..2cb0784 100644
+--- a/cgmanager.c
++++ b/cgmanager.c
+@@ -1478,6 +1478,11 @@ static bool setup_cgroup_dir(void)
+ 		return false;
+ 	}
+ 
++	if (dir_is_sysfs(CGDIR))
++		mount_tmpfs_at(CGDIR);
++	else if (is_ro_mount(CGDIR))
++		turn_mount_rw(CGDIR);
++
+ 	if (file_exists(CGMANAGER_SOCK)) {
+ 		if (unlink(CGMANAGER_SOCK) < 0) {
+ 			nih_error("%s: failed to delete stale cgmanager socket", __func__);
+@@ -1485,11 +1490,6 @@ static bool setup_cgroup_dir(void)
+ 		}
+ 	}
+ 
+-	if (dir_is_sysfs(CGDIR))
+-		mount_tmpfs_at(CGDIR);
+-	else if (is_ro_mount(CGDIR))
+-		turn_mount_rw(CGDIR);
+-
+ 	return mkdir_cgmanager_dir();
+ }
+ 

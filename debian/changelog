@@ -1,3 +1,9 @@
+cgmanager (0.39-1ubuntu1) UNRELEASED; urgency=medium
+
+  * add fix for cgmanager failing to restart with ro cgfs
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 14 Sep 2015 13:18:04 -0500
+
 cgmanager (0.39-1) unstable; urgency=medium
 
   * New release
