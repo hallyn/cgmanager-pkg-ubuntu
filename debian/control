@@ -1,0 +1,89 @@
+Source: cgmanager
+Section: admin
+Priority: optional
+Maintainer: Serge Hallyn <serge.hallyn@ubuntu.com>
+Build-Depends:
+        autotools-dev,
+        debhelper (>= 9),
+        dh-autoreconf,
+        dh-systemd,
+        help2man,
+        libdbus-1-dev,
+        libnih-dbus-dev,
+        libnih-dev,
+        libtool,
+        libpam0g-dev,
+        nih-dbus-tool,
+        pkg-config,
+Standards-Version: 3.9.6
+Homepage: http://cgmanager.linuxcontainers.org/
+XS-Testsuite: autopkgtest
+
+Package: cgmanager
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: cgmanager-utils
+Conflicts: cgmanager-utils (<< 0.30-1)
+Replaces: cgmanager-utils (<< 0.30-1)
+Description: Central cgroup manager daemon
+ cgmanager provides a central cgroup manager daemon and a
+ per-namespace manager proxy, allowing users and programs
+ to administrate cgroups through D-Bus requests.
+ .
+ This package contains the cgroup management daemon and
+ proxy.
+
+Package: cgmanager-tests
+Architecture: all
+Depends: cgmanager, ${misc:Depends}
+Description: Central cgroup manager daemon (tests)
+ cgmanager provides a central cgroup manager daemon and a
+ per-namespace manager proxy, allowing users and programs
+ to administrate cgroups through D-Bus requests.
+ .
+ This package contains the test scripts.
+
+Package: libcgmanager0
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: same
+Description: Central cgroup manager daemon (client library)
+ cgmanager provides a central cgroup manager daemon and a
+ per-namespace manager proxy, allowing users and programs
+ to administrate cgroups through D-Bus requests.
+ .
+ This package contains the shared library.
+
+Package: libcgmanager-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+ libcgmanager0  (= ${binary:Version}),
+ libdbus-1-dev,
+ libnih-dbus-dev
+Description: Central cgroup manager daemon (dev)
+ cgmanager provides a central cgroup manager daemon and a
+ per-namespace manager proxy, allowing users and programs
+ to administrate cgroups through D-Bus requests.
+ .
+ This package contains the static library and C header files
+ needed for developing software using libcgmanager.
+
+Package: libpam-cgm
+Architecture: linux-any
+Section: admin
+Priority: optional
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libpam-runtime (>= 1.0.1-6),
+         cgmanager
+Description: Central cgroup manager daemon (PAM module)
+ cgmanager provides a central cgroup manager daemon and a
+ per-namespace manager proxy, allowing users and programs
+ to administrate cgroups through D-Bus requests.
+ .
+ This provides a Pluggable Authentication Module (PAM) to provide
+ logged-in users with a set of cgroups which they can administer.
+ This allows for instance unprivileged containers.

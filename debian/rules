@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+%:
+	dh $@  --with autotools_dev --with autoreconf
+
+override_dh_autoreconf:
+	[ -e m4 ] || mkdir m4
+	dh_autoreconf
+
+override_dh_auto_configure:
+	dh_auto_configure -- --exec-prefix=
+
+override_dh_makeshlibs:
+	dh_makeshlibs -- -c4
+
+override_dh_install:
+	mkdir -p $(CURDIR)/debian/tmp/lib/$(DEB_HOST_MULTIARCH)
+	mv $(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/libcgmanager.so.* \
+		$(CURDIR)/debian/tmp/lib/$(DEB_HOST_MULTIARCH)/
+	cp $(CURDIR)/debian/pam-cgm.config \
+		$(CURDIR)/debian/libpam-cgm/usr/share/pam-configs/cgm
+	for i in $(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/libcgmanager.so ; do \
+		dest=$$(readlink $$i) ; \
+		rm -f $$i ; \
+		ln -s /lib/$(DEB_HOST_MULTIARCH)/$$dest $$i ; \
+	done
+	dh_install
+
+override_dh_installinit:
+	dh_systemd_enable -pcgmanager --name=cgmanager
+	dh_systemd_enable -pcgmanager --name=cgproxy
+	dh_installinit -pcgmanager --name=cgmanager
+	dh_installinit -pcgmanager --name=cgproxy

@@ -1,0 +1,3 @@
+usr/lib/*/pkgconfig/libcgmanager.pc
+usr/include/cgmanager
+usr/lib/*/libcgmanager.so

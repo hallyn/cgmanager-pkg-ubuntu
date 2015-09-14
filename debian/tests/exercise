@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+cd /usr/share/cgmanager/tests/
+./runtests.sh

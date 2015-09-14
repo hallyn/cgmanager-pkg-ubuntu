@@ -1,0 +1,674 @@
+cgmanager (0.39-1) unstable; urgency=medium
+
+  * New release
+  * 0001-cgmanager-turn-cgroupfs-rw-before-trying-to-unlink-s.patch: upstream
+    patch to make sure cgroupfs is writeable before attempting to clean up a
+    stale cgmanager socket.
+  * add libpam-cgm package
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 07 Sep 2015 14:58:46 -0500
+
+cgmanager (0.37-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 07 May 2015 13:35:10 -0400
+
+cgmanager (0.36-2) unstable; urgency=medium
+
+  * import upstream patch to bind-mount / into new root.  (Closes: #757348)
+  * import upstream patch to bind-mount /run into new root so that on
+    sysvinit the /run/cgmanager.pid file shows up on the host.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 13 Feb 2015 13:48:40 -0600
+
+cgmanager (0.36-1) unstable; urgency=medium
+
+  * New upstream release.
+    - start in a clean mounts namespace (Closes: #760281, #767468)
+  * add *list_keys* to symbols file
+  * pass -c4 to dh_makeshlibs to catch missing smbols in the future
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 11 Feb 2015 22:24:24 -0600
+
+cgmanager (0.35-1) unstable; urgency=medium
+
+  * New upstream release.
+  * debian/rules: drop --no-enable from systemd units. (LP: #1400394)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 12 Jan 2015 09:02:44 -0600
+
+cgmanager (0.34-1) unstable; urgency=high
+
+  * New upstream release.  Drop all patches as all are now upstream.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 05 Jan 2015 14:28:19 -0600
+
+cgmanager (0.33-3) unstable; urgency=medium
+
+  * SECURITY UPDATE: Cross-cgroup resource control bypass.
+    - debian/patches/0001-make-sure-to-check-cgroup-hierarchy.patch, modify
+      cgmanager.c to verify that requests are allowed under the caller's
+      cgroup.
+    - CVE-2014-1425
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 16 Dec 2014 14:33:39 -0600
+
+cgmanager (0.33-2) unstable; urgency=medium
+
+  * Cherrypick two upstream patches to ensure that 'movepid all' continues
+    when a subsystem is not enabled.  (Closes: #757348)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 14 Oct 2014 01:33:03 +0200
+
+cgmanager (0.33-1) unstable; urgency=medium
+
+  * New upstream release.  Drop all patches as all are upstream.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 29 Sep 2014 12:59:10 -0500
+
+cgmanager (0.32-4) unstable; urgency=medium
+
+  * 0004-cgmanager-remount-sys-fs-cgroup-rw-if-needed.patch: stop cgmanager
+    from overmounting systemd's /sys/fs/cgroup mounts (Closes: #761389)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 15 Sep 2014 12:29:31 -0500
+
+cgmanager (0.32-3) unstable; urgency=medium
+
+  * cherrypick 0003-gettasksrecursive_scm-call-the-right-main-function.patch
+    to make the scm gettasksrecursive call the right hook.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 10 Sep 2014 20:32:05 -0500
+
+cgmanager (0.32-2) unstable; urgency=medium
+
+  * 0001-gettasksrecursive-call-the-scm-completion.patch - make the scm
+    version of gettasksrecursive actually complete.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 10 Sep 2014 18:22:42 -0500
+
+cgmanager (0.32-1) unstable; urgency=medium
+
+  * New upstream release, implementing Prune, GetTasksRecursive, and
+    ListControllers
+  * cgmanager upstart job: start on starting dbus
+  * 0001-fix-regression-introduced-by-recent-switch-to-nih_lo.patch:
+    cherrypick upstream fix for get_tasks_recursive segv.
+  * sysvinit jobs: fix mismatched use of do_ in do_start/do_stop
+    (Closes: #759203)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 08 Sep 2014 18:03:02 -0500
+
+cgmanager (0.30-1) unstable; urgency=medium
+
+  * Merge new upstream release
+    - drop all patches (applied upstream)
+    - move cgm binary to cgmanager package
+    - drop cgmanager-utils package, now unneeded
+    - copy in init jobs from upstream (which have all fixes)
+  * add notify-cgmanager.conf from ubuntu package to enable cgroup support
+    in user-session Upstart.
+  * 0001-fix-typo-in-systemd-makefile.patch - cherrypick upstream fix for ftbfs
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 04 Aug 2014 19:01:55 +0000
+
+cgmanager (0.28-3) unstable; urgency=medium
+
+  * cherrypick 0002-dont-issue-scary-warning-about-premounted-cgroup from
+    upstream to quiet scary warnings when running under systemd
+    (Closes: #756072)
+  * re-work sysv init scripts:
+    - split out restart from start (Closes: #756070)
+    - check if daemon is running at top of start (Closes: #756073)
+    - report failure if cgmanager failed to start (Closes: #756071)
+    - stop cgproxy when stopping cgmanager (Closes: #756074)
+  * cherrypick 0003-mount-root-private-in-our-ns.patch to avoid leaking
+    cgroup mounts to host.
+  * add dh-systemd to build-deps and add systemd units, disabled by default
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 28 Jul 2014 22:40:46 -0500
+
+cgmanager (0.28-2) unstable; urgency=medium
+
+  * cherrypick 0001-ignore-failure-to-mount-cgroups-at-startup.patch from
+    upstream: don't fail to start if memory cgroup is not mountable.
+    (Closes: #755990)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 25 Jul 2014 12:56:01 -0500
+
+cgmanager (0.28-1) unstable; urgency=medium
+
+  * Initial release for Debian. (Closes: #754910)
+  * debian/cgmanager.cgmanager.init: always mount name=systemd
+  * debian/control:
+    - remove hardening-wrapper dependency
+    - make cgmanager-tests arch:all
+  * debian/rules
+    - remove CDBS hardening flags
+    - set DEB_BUILD_MAINT_OPTIONS = hardening=+all
+    - split out override_dh_installinit
+  * debian/*init
+    - use /run not /var/run for pidfiles
+    - implement status
+    - don't use 'service'
+  * remove *.dirs and *.lintian-overrides
+  * correct the copyright file
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 16 Jul 2014 14:25:10 -0500
+
+cgmanager (0.27-0ubuntu7) utopic; urgency=medium
+
+  * Fix the cgproxy sysvinit to not start non-nested on newer kernels.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 14 Jul 2014 12:55:38 -0500
+
+cgmanager (0.27-0ubuntu6) utopic; urgency=medium
+
+  * make-sure-to-get-next-toke.patch: this is only needed in cases where
+    controllers have been co-mounted (i.e. by systemd).
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 14 Jul 2014 12:35:49 -0500
+
+cgmanager (0.27-0ubuntu5) utopic; urgency=medium
+
+  * Skip test14 on 3.16 kernels.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 14 Jul 2014 10:04:28 -0500
+
+cgmanager (0.27-0ubuntu4) utopic; urgency=medium
+
+  * further debug recursive_rmdir.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 11 Jul 2014 16:00:31 -0500
+
+cgmanager (0.27-0ubuntu3) utopic; urgency=medium
+
+  * Add debug statements to all Remove failure points
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 11 Jul 2014 14:59:09 -0500
+
+cgmanager (0.27-0ubuntu2) utopic; urgency=medium
+
+  * test14: dump cgmanager log on failure
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 11 Jul 2014 13:43:36 -0500
+
+cgmanager (0.27-0ubuntu1) utopic; urgency=medium
+
+  * Merge upstream release 0.27
+  * Drop all patches, all are upstream.
+  * 0001-test14-add-some-debugging.patch - try to debug test14 failures in
+    jenkins.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 11 Jul 2014 10:58:01 -0500
+
+cgmanager (0.26-0ubuntu6) utopic; urgency=medium
+
+  * Add sysvinit scripts.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 10 Jul 2014 22:13:59 -0500
+
+cgmanager (0.26-0ubuntu5) utopic; urgency=medium
+
+  * apply from upstream:
+    0007-implement-all-and-comma-delimited-controller-sets-fo.patch
+    This is needed for systemd-shim to be able to easily / robustly ask
+    for all session cgroups to be auto-removed.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 10 Jul 2014 12:37:44 -0500
+
+cgmanager (0.26-0ubuntu4) utopic; urgency=medium
+
+  * Apply patches from upstream:
+    - 0003-sort-the-controller-mounts.patch: speed up finding controller mount
+      indexed by controller name.
+    - 0004-handle-pre-mounted-and-co-mounted-subsystems.patch: make cgmanager
+      play nicely when others (systemd or cgroup-lite) have already mounted
+      cgroups, some of which may have been co-mounted.
+    - 0005-introduce-basic-structure-for-multiple-controller-db.patch: handle
+      "all" and "cpu,cpuset" when passed to certain dbus requests.
+    - 0006-update-api-version.patch: update api version so userspace knows
+      whether it can pass multiple controllers.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 02 Jul 2014 16:05:42 -0500
+
+cgmanager (0.26-0ubuntu3) utopic; urgency=medium
+
+  * debian/patches/0002-fix-crash-on-free.patch:
+    - Fix possible crash when freeing an IO channel
+
+ -- Michael Terry <mterry@ubuntu.com>  Sun, 25 May 2014 13:16:08 -0400
+
+cgmanager (0.26-0ubuntu2) utopic; urgency=low
+
+  * 0001-cgm-make-all-also-reference-name-systemd.patch: make cgm all
+    also act on the name=systemd container  (LP: #1317687)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 08 May 2014 17:58:29 -0500
+
+cgmanager (0.26-0ubuntu1) utopic; urgency=low
+
+  * Sync upstream version 0.26
+    - bump abi version to 4, so lxc can distinguish older versions
+      with broken name=systemd handling.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 08 May 2014 12:51:40 -0500
+
+cgmanager (0.25-0ubuntu5) utopic; urgency=medium
+
+  * d/p/0008-get_controller_path-use-the-is_same_controller-helpe.patch:
+    correctly handle requests pertaining to named systems (i.e.
+    'name=systemd').
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 02 May 2014 13:28:24 -0500
+
+cgmanager (0.25-0ubuntu4) utopic; urgency=medium
+
+  * d/p/0006-bump-api-version-for-getpidcgroupabs.patch: bump the api
+    version so users can detect whether GetPidCgroupAbs is expected
+    to exist.
+  * d/p/0007-test22-don-t-output-to-a-debug-file-in-cwd.patch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 01 May 2014 16:46:56 -0500
+
+cgmanager (0.25-0ubuntu3) utopic; urgency=medium
+
+  * re-name test-wait-for-slow-vm to number it
+  * d/p/0002-add-movepidabs-to-cgm.patch: allow movepidabs to be used through
+    cgm
+  * d/p/0003-Implement-getpidcgroupabs.patch: add a way to get a cgroup path
+    for a pid relative to your proxy (for use with movepidabs)
+  * d/p/0004-Undo-the-connection-timeouts.patch: remove the connection
+    timeouts, as they make containers constantly reconnect.
+  * d/p/0005-test22-abort-test-if-we-re-not-allowed-to-move-the-c.patch -
+    avoid spurious testing failure report in restrictive containers.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 01 May 2014 10:04:23 -0500
+
+cgmanager (0.25-0ubuntu2) utopic; urgency=low
+
+  * test-wait-for-slow-vm - avoid racing with the cgroup remove hook.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 30 Apr 2014 15:25:25 -0500
+
+cgmanager (0.25-0ubuntu1) utopic; urgency=medium
+
+  * Merge 0.25 from upstream
+    - add timeouts to connections
+    - fix startup crashers
+    - don't hang cgproxy if cgmanager crashes
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 29 Apr 2014 10:31:52 -0500
+
+cgmanager (0.24-0ubuntu5) trusty; urgency=medium
+
+  * Add a 'stop on' to the upstart jobs (LP: #1307008)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 14 Apr 2014 00:13:44 -0500
+
+cgmanager (0.24-0ubuntu4) trusty; urgency=medium
+
+  * debian/control: drop Vcs-Git field, which was pointing to the upstream
+    branch, not packaging branch.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 09 Apr 2014 23:13:03 -0500
+
+cgmanager (0.24-0ubuntu3) trusty; urgency=medium
+
+  * Use SIGSTOP as a way to tell upstart that we are ready to accept
+    queries, this fixes a race condition. (LP: #1302174)
+  * Emit cgmanager-ready once all the required daemons have been spawned
+    and are ready for requests. (LP: #1302174)
+  * Always kill cgproxy when spawning cgmanager, this is required to
+    allow proper restart/respawning on systems using both daemons.
+    (LP: #1302174)
+
+ -- Stéphane Graber <stgraber@ubuntu.com>  Fri, 04 Apr 2014 21:04:43 -0400
+
+cgmanager (0.24-0ubuntu2) trusty; urgency=medium
+
+  [ Serge Hallyn ]
+  * move libraries from /usr/lib into /lib (LP: #1301544)
+  * debian/control:
+    - remove ${shlibs:Depends} from cgmanager-utils, cgmanager-tests and
+      libcgmanager-devel
+  * Makefile.am:
+    - add -shared to AM_LDFLAGS
+    - add AM_LDFLAGS to libcgmanager's ldflags
+
+  [ Stéphane Graber ]
+  * Add adt support.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 02 Apr 2014 13:59:03 -0500
+
+cgmanager (0.24-0ubuntu1) trusty; urgency=medium
+
+  * Sync upstream relase v0.24
+    - Includes RemoveOnEmpty method (LP: #1281683)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 31 Mar 2014 14:00:53 -0500
+
+cgmanager (0.23-0ubuntu2) trusty; urgency=medium
+
+  * debian/control: fix description of cgmanager-utils package.
+  * debian/*.upstart: hard-code /sbin/ into the exec paths to avoid
+    accidentally running old binaries not shipped with the package.
+  * libcgmanager-dev.install: install libcgmanager.so
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 25 Mar 2014 10:15:14 -0500
+
+cgmanager (0.23-0ubuntu1) trusty; urgency=medium
+
+  * Pull upstream release v0.23
+    - all patches are upstream, drop from debian/patches/
+    - fix memory leak in scm handlers (LP: #1296804)
+    - add a simple to use client tool (LP: #1295227)
+  * debian/control: fix weak library dev dependency.
+  * add cgmanager-utils package containing cgm client script
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 24 Mar 2014 11:56:04 -0500
+
+cgmanager (0.20-0ubuntu5) trusty; urgency=medium
+
+  * proxy: reconnect to cgmanager after disconnection (LP: #1294419)
+  * print function name in most error messages
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 19 Mar 2014 00:18:56 -0500
+
+cgmanager (0.20-0ubuntu4) trusty; urgency=medium
+
+  * d/p/0003-set_value-only-check-write-access-rights.patch: fix wrong
+    refusals to set cgroup values (LP: #1293647)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 17 Mar 2014 11:38:19 -0500
+
+cgmanager (0.20-0ubuntu3) trusty; urgency=medium
+
+  * Implement ListChildren method to list child cgroups (LP: #1285900)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 27 Feb 2014 16:51:30 -0600
+
+cgmanager (0.20-0ubuntu2) trusty; urgency=medium
+
+  * limit depth of cgroups (LP: #1284872)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 26 Feb 2014 10:41:27 -0600
+
+cgmanager (0.20-0ubuntu1) trusty; urgency=medium
+
+  * Merge upstream v0.20
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 24 Feb 2014 16:38:37 -0600
+
+cgmanager (0.19-0ubuntu7) trusty; urgency=medium
+
+  * 0006-cgproxy-remove-proxydir-if-it-exists.patch - this fixes startup of
+    the proxy on the host itself, which is needed on older kernels.  (update
+    it to rmdir rather than unlink the directory)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 21 Feb 2014 23:41:54 -0600
+
+cgmanager (0.19-0ubuntu6) trusty; urgency=medium
+
+  * 0005-allow-passing-in-extra-mounts.patch
+  * debian/cgmanager.cgmanager.upstart: add '-m name=systemd' to mount
+    the systemd cgroup for logind's use.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 17 Feb 2014 16:48:14 -0600
+
+cgmanager (0.19-0ubuntu5) trusty; urgency=medium
+
+  * debian/control: add dependency on libdbus-1-dev to libcgmanager-dev
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 13 Feb 2014 15:06:34 -0600
+
+cgmanager (0.19-0ubuntu4) trusty; urgency=medium
+
+  * debian/rules: make sure to create m4 before calling autoreconf.
+  * debian/control: make libcgmanager-dev Depend on nih-dbus-tool and
+    libcgmanager0
+  * debian/cgmanager.cgmanager.upstart: also start on
+    virtual-filesystems so as to start correctly in precise.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 06 Feb 2014 16:27:15 -0600
+
+cgmanager (0.19-0ubuntu3) trusty; urgency=medium
+
+  * add 0004-add-.spec-for-rpm-build-minor-packaging-fixes.patch to move
+    include file to /usr/include/cgmanager
+  * debian/rules: don't hand-install pkgconfig
+  * libcgmanager-dev.install: fix location of pkgconfig and
+    /usr/include/cgmanager.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 05 Feb 2014 15:40:35 -0600
+
+cgmanager (0.19-0ubuntu2) trusty; urgency=medium
+
+  * add upstream patch 0003-proxy-support-running-in-top-namespace.patch
+    so proxy can run in initial namespace on old kernels
+  * add cgproxy upstart job to run on host on old kernels, thanks to
+    stgraber.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 05 Feb 2014 10:40:07 -0600
+
+cgmanager (0.19-0ubuntu1) trusty; urgency=medium
+
+  * Merge upstream v0.19
+  * Add upstream patch to introduce manual pages.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 03 Feb 2014 16:50:26 -0600
+
+cgmanager (0.18-0ubuntu1) trusty; urgency=medium
+
+  * Merge upstream v0.18.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 31 Jan 2014 15:04:29 +0000
+
+cgmanager (0.17-0ubuntu2) trusty; urgency=medium
+
+  * cherrypick d/p/0001-cgmanager_chown-pass-a-valid-pid.patch from
+    upstream to fix broken chown through proxy.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 28 Jan 2014 17:28:35 +0000
+
+cgmanager (0.17-0ubuntu1) trusty; urgency=medium
+
+  * Merge upstream 0.17.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 28 Jan 2014 10:58:02 +0000
+
+cgmanager (0.16-0ubuntu3) trusty; urgency=medium
+
+  * d/p/0006-hostuid_to_ns-don-t-dabble-with-1-uid_ts.patch.  This also
+    allows root in a user ns to chown a cgroup owned by a uid mapped
+    into the namespace.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 24 Jan 2014 00:04:58 -0600
+
+cgmanager (0.16-0ubuntu2) trusty; urgency=medium
+
+  * Add patches from upstream; particularly to more robustly handle nih_errors.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 23 Jan 2014 18:31:04 -0600
+
+cgmanager (0.16-0ubuntu1) trusty; urgency=medium
+
+  * Initial upload to the archive
+  * Merge upstream v0.16.
+    - change &existed return value in create and remove methods: "no" is
+      now -1 not 0.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 20 Jan 2014 18:46:11 -0600
+
+cgmanager (0.15-3) trusty; urgency=medium
+
+  * upstart:
+    - fix syntax error
+    - optionally call /etc/default/cgmanager to source options (namely
+      --debug)
+  * 0004-formality-explicitly-call-existed-an-int32_t.patch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 17 Jan 2014 12:17:08 -0600
+
+cgmanager (0.15-2) trusty; urgency=medium
+
+  * Add patches from upstream:
+    - 0001-Fixes-for-Coverity-identified-issues.patch
+    - 0002-address-pid-wraparound-in-hostuid_to_ns.patch
+    - 0003-set_value-start-a-trivial-files-blacklist.patch
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 17 Jan 2014 11:35:22 -0600
+
+cgmanager (0.15-1) trusty; urgency=medium
+
+  [ Serge Hallyn ]
+  * Merge new upstream tag 0.15
+  * d/cgmanager.upstart: don't rely on dbus-send
+
+  [ Stéphane Graber]
+  * fix lintian errors
+  * fix licensing
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 17 Jan 2014 10:05:07 -0600
+
+cgmanager (0.14-2) trusty; urgency=medium
+
+  * define a -dbg package.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 16 Jan 2014 14:22:45 -0600
+
+cgmanager (0.14-1) trusty; urgency=medium
+
+  * Merge new upstream tag 0.14, with lots of bugfixes.  All tests now
+    pass on host and in a userns container through proxy.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Thu, 16 Jan 2014 12:28:02 -0600
+
+cgmanager (0.13-1) trusty; urgency=medium
+
+  * merge new upstream tag 0.13.
+  * This implements Remove.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 14 Jan 2014 17:26:47 -0600
+
+cgmanager (0.12-1) trusty; urgency=medium
+
+  * merge new upstream tag 0.12.
+  * add a 'existed' output paramater to Create and CreateScm methods.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 14 Jan 2014 13:18:58 -0600
+
+cgmanager (0.11-5) trusty; urgency=medium
+
+  * d/p/0001-add-CreateExclusive-method.patch: add CreateExclusive which
+    fails if the requested cgroup exists.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 13 Jan 2014 20:18:17 -0600
+
+cgmanager (0.11-4) trusty; urgency=medium
+
+  * install libcgmanager.pc and cgmanager.h
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 13 Jan 2014 16:02:36 -0600
+
+cgmanager (0.11-3) trusty; urgency=medium
+
+  * fix typo in upstart script (s/bin/sbin/)
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 13 Jan 2014 15:47:04 -0600
+
+cgmanager (0.11-2) trusty; urgency=medium
+
+  * d/libcgmanager-dev.install: fix the destination path for libcgmanager.h
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 13 Jan 2014 13:40:59 -0600
+
+cgmanager (0.11-1) trusty; urgency=medium
+
+  * Merge new upstream tag 0.11, which removes the &ok dbus parameter.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 13 Jan 2014 12:08:52 -0600
+
+cgmanager (0.10-2) trusty; urgency=medium
+
+  * upstart: don't run if cgmanager has been removed.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 10 Jan 2014 23:06:56 -0600
+
+cgmanager (0.10-1) trusty; urgency=medium
+
+  * Merge new upstream tag 0.10.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 10 Jan 2014 16:20:00 -0600
+
+cgmanager (0.03-4) trusty; urgency=medium
+
+  * make tests executable
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 08 Jan 2014 13:28:15 -0600
+
+cgmanager (0.03-3) trusty; urgency=medium
+
+  * Install tests and libcgmanager.pc.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Wed, 08 Jan 2014 11:09:03 -0600
+
+cgmanager (0.03-2) trusty; urgency=medium
+
+  * Fix upstart job to handle set -e.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 07 Jan 2014 14:49:16 -0600
+
+cgmanager (0.03-1) trusty; urgency=medium
+
+  * Re-sync github tree, remove quilt patches
+  * Move cgmanager socket to /sys/
+  * Add upstart job.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 07 Jan 2014 13:21:39 -0600
+
+cgmanager (0.02-2) trusty; urgency=medium
+
+  * add upstream patch to move cgmanager to sbin
+  * d/rules: set prefix to /
+  * d/cgmanager.install: install sbin/*
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Tue, 07 Jan 2014 11:43:03 -0600
+
+cgmanager (0.02-1) trusty; urgency=medium
+
+  * Switch to autoconf
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Mon, 06 Jan 2014 16:32:03 -0600
+
+cgmanager (0.01-5) trusty; urgency=medium
+
+  * import upstream patch to have make install create $(DESTDIR)/usr/bin
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 03 Jan 2014 17:11:50 -0600
+
+cgmanager (0.01-4) trusty; urgency=medium
+
+  * apply 0001-add-a-cgmanager-client.so.patch (from upstream).  Next
+    we should add a library package.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 03 Jan 2014 16:46:43 -0600
+
+cgmanager (0.01-3) trusty; urgency=medium
+
+  * d/control: add a few more build-deps.
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 03 Jan 2014 16:21:52 -0600
+
+cgmanager (0.01-2) trusty; urgency=medium
+
+  * d/control: add nih-dbus-tool and libdbus-1-dev to build-deps
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 03 Jan 2014 15:14:42 -0600
+
+cgmanager (0.01-1) trusty; urgency=low
+
+  * Initial release
+
+ -- Serge Hallyn <serge.hallyn@ubuntu.com>  Fri, 03 Jan 2014 14:12:07 -0600

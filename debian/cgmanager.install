@@ -1,0 +1,3 @@
+sbin
+bin/* usr/bin/
+debian/notify-cgmanager.conf usr/share/upstart/sessions/
